@@ -17,3 +17,16 @@
 
 (two-in-a-row? '(Italian sardines sardines spaghetti parslet))
 
+
+(define sum-of-prefixes-b
+  (lambda (sonssf tup)
+    (cond
+      ((null? tup) '())
+      (else (cons (+ sonssf (car tup))
+                  (sum-of-prefixes-b (+ sonssf (car tup))
+                                     (cdr tup)))))))
+(define sum-of-prefixes
+  (lambda (tup)
+    (sum-of-prefixes 0 tup)))
+
+(sum-of-prefixes '(1 1 1))
