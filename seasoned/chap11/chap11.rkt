@@ -18,6 +18,7 @@
 (two-in-a-row? '(Italian sardines sardines spaghetti parslet))
 
 
+;; The same trick
 (define sum-of-prefixes-b
   (lambda (sonssf tup)
     (cond
@@ -27,6 +28,29 @@
                                      (cdr tup)))))))
 (define sum-of-prefixes
   (lambda (tup)
-    (sum-of-prefixes 0 tup)))
+    (sum-of-prefixes-b 0 tup)))
 
 (sum-of-prefixes '(1 1 1))
+
+
+;; Now the additional information is all reversed prefixes
+(define scramble-b
+  (lambda (tup rev-pre)
+    (cond
+      ((null? tup) '())
+      (else
+       (let* ((cur (car tup))
+              (new-pre (cons cur rev-pre)))
+         (cons (pick cur new-pre)
+               (scramble-b (cdr tup) new-pre)))))))
+(define pick
+  (lambda (n lat)
+    (cond
+      ((eq? n 1) (car lat))
+      (else (pick (- n 1) (cdr lat))))))
+
+(define scramble
+  (lambda (tup)
+    (scramble-b tup '())))
+
+(scramble '(1 1 1 3 4 2 1 1 9 2))
