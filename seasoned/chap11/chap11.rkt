@@ -54,3 +54,18 @@
     (scramble-b tup '())))
 
 (scramble '(1 1 1 3 4 2 1 1 9 2))
+
+
+(define multirember-f
+  (lambda (test?)
+    (letrec
+        ((m-f
+          (lambda (a lat)
+            (cond
+              ((null? lat) '())
+              ((test? (car lat) a)
+               (m-f a (cdr lat)))
+              (else
+               (cons (car lat)
+                     (m-f a (cdr lat))))))))
+      mf)))
