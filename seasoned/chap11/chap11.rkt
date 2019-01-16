@@ -94,3 +94,23 @@
 (member2? 1 '(3 2 1 0))
 
 
+;; Since `set2` will not change in recursion, we use the same trick again.
+;; To hide and protect `member?`, we don't define it in global bindings.
+;; We put it in `letrec` too.
+(define union
+  (lambda (set1 set2)
+    (letrec ((U (lambda (set)
+                  (cond
+                    ((null? set) set2)
+                    ((member2? (car set) set2) (U (cdr set)))
+                    (else (cons (car set)
+                                (U (cdr set)))))))
+             (member?
+              (lambda (a lat)
+                (cond
+                  ((null? lat) #f)
+                  ((eq? (car lat) a) #t)
+                  (else (member? a (cdr lat)))))))
+      (U set1))))
+
+(union '(1 2 3) '(5 3 7))
