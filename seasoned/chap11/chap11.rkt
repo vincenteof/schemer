@@ -55,7 +55,7 @@
 
 (scramble '(1 1 1 3 4 2 1 1 9 2))
 
-
+;; letrec example
 (define multirember-f
   (lambda (test?)
     (letrec
@@ -68,4 +68,29 @@
               (else
                (cons (car lat)
                      (m-f a (cdr lat))))))))
-      mf)))
+      m-f)))
+
+;; 2 ways of defining `member?`
+(define member1?
+  (lambda (a lat)
+    ((letrec ((yes? (lambda (l)
+                     (cond
+                       ((null? l) #f)
+                       ((eq? (car l) a) #t)
+                       (else (yes? (cdr l)))))))
+       yes?)
+     lat)))
+
+(define member2?
+  (lambda (a lat)
+    (letrec ((yes? (lambda (l)
+                     (cond
+                       ((null? l) #f)
+                       ((eq? (car l) a) #t)
+                       (else (yes? (cdr l)))))))
+      (yes? lat))))
+
+(member1? 1 '(3 2 1 0))
+(member2? 1 '(3 2 1 0))
+
+
