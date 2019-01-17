@@ -2,33 +2,32 @@
 
 ;; `preceding` stores some current state of the computation,
 ;; while `lat` is used to recur on.
-(define two-in-a-row-b?
-  (lambda (preceding lat)
-    (cond
-      ((null? lat) #f)
-      (else (or (eq? (car lat) preceding)
-                (two-in-a-row-b? (car lat) (cdr lat)))))))
-
+;; Hide and protect `two-in-a-row-b?` too.
 (define two-in-a-row?
   (lambda (lat)
-    (cond
-      ((null? lat) #f)
-      (else (two-in-a-row-b? (car lat) (cdr lat))))))
+    (letrec ((W (lambda (a lat)
+                  (cond
+                    ((null? lat) #f)
+                    (else (or (eq? (car lat) a)
+                              (W (car lat) (cdr lat))))))))
+      (cond
+        ((null? lat) #f)
+        (else (W (car lat) (cdr lat)))))))
 
 (two-in-a-row? '(Italian sardines sardines spaghetti parslet))
 
 
-;; The same trick
-(define sum-of-prefixes-b
-  (lambda (sonssf tup)
-    (cond
-      ((null? tup) '())
-      (else (cons (+ sonssf (car tup))
-                  (sum-of-prefixes-b (+ sonssf (car tup))
-                                     (cdr tup)))))))
+;; The same trick1
+;; The same trick2
 (define sum-of-prefixes
   (lambda (tup)
-    (sum-of-prefixes-b 0 tup)))
+    (letrec ((S (lambda (sss tup)
+                  (cond
+                    ((null? tup) '())
+                    (else (cons (+ sss (car tup))
+                                (S (+ sss (car tup))
+                                   (cdr tup))))))))
+      (S 0 tup))))
 
 (sum-of-prefixes '(1 1 1))
 
