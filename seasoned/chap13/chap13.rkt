@@ -10,7 +10,9 @@
                      (cons (car set)
                            (I (cdr set))))
                     (else (I (cdr set)))))))
-      (I set1))))
+      (cond
+        ((null? set2) '())
+        (else (I set1))))))
 
 (intersect '(tomatoes and macaroni) '(macaroni and cheese))
 
@@ -27,10 +29,11 @@
                     (car lset))
                    (else
                     (intersect (car lset)
-                              (A (cdr lset))))))))
+                               (A (cdr lset))))))))
          (cond
            ((null? lset) '())
            (else (A lset))))))))
 
 (intersectall '((3 mangos and) (3 kiwis and) (3 hamburgers)))
 (intersectall '((3 mangos and) () (3 hamburgers)))
+(intersectall '((3 steaks and) (no food and) (three baked potatoes) (3 diet hamburgers)))
